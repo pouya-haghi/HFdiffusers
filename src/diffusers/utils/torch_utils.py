@@ -47,6 +47,7 @@ def randn_tensor(
     is always created on the CPU.
     """
     # device on which tensor is created defaults to device
+    print("Hello drom torch_utils")
     rand_device = device
     batch_size = shape[0]
 

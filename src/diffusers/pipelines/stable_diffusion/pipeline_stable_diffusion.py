@@ -958,6 +958,7 @@ class StableDiffusionPipeline(
             ).to(device=device, dtype=latents.dtype)
 
         # 7. Denoising loop
+        print("Hello from pipeline_stable_diffusion")
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
         self._num_timesteps = len(timesteps)
         with self.progress_bar(total=num_inference_steps) as progress_bar:
