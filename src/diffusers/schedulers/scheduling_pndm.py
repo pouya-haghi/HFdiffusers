@@ -442,6 +442,11 @@ class PNDMScheduler(SchedulerMixin, ConfigMixin):
         # full formula (9)
         print("sample_coeff", sample_coeff)
         print("sample", sample)
+        print("mean(sample)", torch.mean(sample))
+        print("max(sample)", torch.max(sample))
+        print("min(sample)", torch.min(sample))
+        print("std(sample)", torch.std(sample))
+        print("model coeff", (alpha_prod_t_prev - alpha_prod_t)/model_output_denom_coeff)
         
         prev_sample = (
             sample_coeff * sample - (alpha_prod_t_prev - alpha_prod_t) * model_output / model_output_denom_coeff
