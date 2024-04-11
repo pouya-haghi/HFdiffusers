@@ -440,13 +440,22 @@ class PNDMScheduler(SchedulerMixin, ConfigMixin):
         ) ** (0.5)
 
         # full formula (9)
-        print("sample_coeff", sample_coeff)
-        print("sample", sample)
-        print("mean(sample)", torch.mean(sample))
-        print("max(sample)", torch.max(sample))
-        print("min(sample)", torch.min(sample))
-        print("std(sample)", torch.std(sample))
-        print("model coeff", (alpha_prod_t_prev - alpha_prod_t)/model_output_denom_coeff)
+        # print("sample_coeff", sample_coeff)
+        # print("sample", sample)
+        # print("mean(sample)", torch.mean(sample))
+        # print("max(sample)", torch.max(sample))
+        # print("min(sample)", torch.min(sample))
+        # print("std(sample)", torch.std(sample))
+        # print("model coeff", (alpha_prod_t_prev - alpha_prod_t)/model_output_denom_coeff)
+        with open("tensor_data.txt", "a") as file:
+            # Write data to the file
+            file.write("sample_coeff" + sample_coeff.cpu().numpy().tostring() + "\n")
+            file.write("sample" + sample.cpu().numpy().tostring() + "\n")
+            file.write("mean(sample)" + torch.mean(sample).cpu().numpy().tostring() + "\n")
+            file.write("max(sample)" + torch.max(sample).cpu().numpy().tostring() + "\n")
+            file.write("min(sample)" + torch.min(sample).cpu().numpy().tostring() + "\n")
+            file.write("std(sample)" + torch.std(sample).cpu().numpy().tostring() + "\n")
+            file.write("model coeff" + ((alpha_prod_t_prev - alpha_prod_t)/model_output_denom_coeff).cpu().numpy().tostring() + "\n")
         
         prev_sample = (
             sample_coeff * sample - (alpha_prod_t_prev - alpha_prod_t) * model_output / model_output_denom_coeff
