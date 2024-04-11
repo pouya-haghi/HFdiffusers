@@ -516,14 +516,14 @@ class EulerDiscreteScheduler(SchedulerMixin, ConfigMixin):
         # backwards compatibility
         if self.config.prediction_type == "original_sample" or self.config.prediction_type == "sample":
             pred_original_sample = model_output
-            # print("Hello from x0")
+            print("Hello from x0")
         elif self.config.prediction_type == "epsilon":
             pred_original_sample = sample - sigma_hat * model_output
-            # print("Hello from e")
+            print("Hello from e")
         elif self.config.prediction_type == "v_prediction":
             # denoised = model_output * c_out + input * c_skip
             pred_original_sample = model_output * (-sigma / (sigma**2 + 1) ** 0.5) + (sample / (sigma**2 + 1))
-            # print("Hello from v")
+            print("Hello from v")
         else:
             raise ValueError(
                 f"prediction_type given as {self.config.prediction_type} must be one of `epsilon`, or `v_prediction`"
