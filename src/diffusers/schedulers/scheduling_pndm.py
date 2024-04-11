@@ -454,7 +454,7 @@ class PNDMScheduler(SchedulerMixin, ConfigMixin):
             file.write("mean(sample) " + str(torch.mean(sample).cpu().numpy()) + "\n")
             file.write("max(sample) " + str(torch.max(sample).cpu().numpy()) + "\n")
             file.write("min(sample) " + str(torch.min(sample).cpu().numpy()) + "\n")
-            file.write("std(sample) " + str(torch.max(torch.abs(sample)).cpu().numpy()) + "\n")
+            file.write("std(sample) " + str(torch.mean(torch.abs(sample)).cpu().numpy()) + "\n")
             file.write("model coeff " + str(((alpha_prod_t_prev - alpha_prod_t)/model_output_denom_coeff).cpu().numpy()) + "\n")
         
         prev_sample = (
