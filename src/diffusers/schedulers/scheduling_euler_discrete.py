@@ -534,6 +534,15 @@ class EulerDiscreteScheduler(SchedulerMixin, ConfigMixin):
 
         dt = self.sigmas[self.step_index + 1] - sigma_hat
 
+        with open("diffuser.txt", "a") as file:
+            # Write data to the file
+            file.write("sample " + str(sample.cpu().numpy()) + "\n")
+            # file.write("mean(sample) " + str(torch.mean(sample).cpu().numpy()) + "\n")
+            # file.write("max(sample) " + str(torch.max(sample).cpu().numpy()) + "\n")
+            # file.write("min(sample) " + str(torch.min(sample).cpu().numpy()) + "\n")
+            file.write("std(sample) " + str(torch.mean(torch.abs(sample)).cpu().numpy()) + "\n")
+            file.write("model coeff " + str(dt.cpu().numpy()) + "\n")
+
         prev_sample = sample + derivative * dt
 
         # Cast sample back to model compatible dtype
