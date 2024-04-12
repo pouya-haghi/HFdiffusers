@@ -951,19 +951,25 @@ class DPMSolverMultistepScheduler(SchedulerMixin, ConfigMixin):
         # Upcast to avoid precision issues when computing prev_sample
         sample = sample.to(torch.float32)
         if self.config.algorithm_type in ["sde-dpmsolver", "sde-dpmsolver++"] and variance_noise is None:
+            print("first if")
             noise = randn_tensor(
                 model_output.shape, generator=generator, device=model_output.device, dtype=torch.float32
             )
         elif self.config.algorithm_type in ["sde-dpmsolver", "sde-dpmsolver++"]:
+            print("second if")
             noise = variance_noise.to(device=model_output.device, dtype=torch.float32)
         else:
+            print("third if")
             noise = None
 
         if self.config.solver_order == 1 or self.lower_order_nums < 1 or lower_order_final:
+            print("first config")
             prev_sample = self.dpm_solver_first_order_update(model_output, sample=sample, noise=noise)
         elif self.config.solver_order == 2 or self.lower_order_nums < 2 or lower_order_second:
+            print("second config")
             prev_sample = self.multistep_dpm_solver_second_order_update(self.model_outputs, sample=sample, noise=noise)
         else:
+            print("thrid config")
             prev_sample = self.multistep_dpm_solver_third_order_update(self.model_outputs, sample=sample)
 
         if self.lower_order_nums < self.config.solver_order:
