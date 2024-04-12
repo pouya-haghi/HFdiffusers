@@ -387,6 +387,13 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
                 "Number of inference steps is 'None', you need to run 'set_timesteps' after creating the scheduler"
             )
 
+        with open("diffuser.txt", "a") as file:
+            file.write("sample " + str(sample.cpu().numpy()) + "\n")
+            # file.write("mean(sample) " + str(torch.mean(sample).cpu().numpy()) + "\n")
+            # file.write("max(sample) " + str(torch.max(sample).cpu().numpy()) + "\n")
+            # file.write("min(sample) " + str(torch.min(sample).cpu().numpy()) + "\n")
+            file.write("std(sample) " + str(torch.mean(torch.abs(sample)).cpu().numpy()) + "\n")
+
         # See formulas (12) and (16) of DDIM paper https://arxiv.org/pdf/2010.02502.pdf
         # Ideally, read DDIM paper in-detail understanding
 
@@ -469,6 +476,10 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
             variance = std_dev_t * variance_noise
 
             prev_sample = prev_sample + variance
+
+        with open("diffuser.txt", "a") as file:
+            file.write("sample coeff " + str(((alpha_prod_t_prev/alpha_prod_t) ** (0.5)).cpu().numpy()) + "\n")
+            file.write("model coeff " + str((((1 - alpha_prod_t_prev - std_dev_t**2) ** (0.5)) - ((alpha_prod_t_prev*beta_prod_t)/alpha_prod_t) ** (0.5)).cpu().numpy()) + "\n")
 
         if not return_dict:
             return (prev_sample,)
