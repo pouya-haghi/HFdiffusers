@@ -410,12 +410,15 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
         # 3. compute predicted original sample from predicted noise also called
         # "predicted x_0" of formula (12) from https://arxiv.org/pdf/2010.02502.pdf
         if self.config.prediction_type == "epsilon":
+            print("epsilon")
             pred_original_sample = (sample - beta_prod_t ** (0.5) * model_output) / alpha_prod_t ** (0.5)
             pred_epsilon = model_output
         elif self.config.prediction_type == "sample":
+            print("sample")
             pred_original_sample = model_output
             pred_epsilon = (sample - alpha_prod_t ** (0.5) * pred_original_sample) / beta_prod_t ** (0.5)
         elif self.config.prediction_type == "v_prediction":
+            print("v_pred")
             pred_original_sample = (alpha_prod_t**0.5) * sample - (beta_prod_t**0.5) * model_output
             pred_epsilon = (alpha_prod_t**0.5) * model_output + (beta_prod_t**0.5) * sample
         else:
@@ -426,8 +429,10 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
 
         # 4. Clip or threshold "predicted x_0"
         if self.config.thresholding:
+            print("config.thresholding: yes")
             pred_original_sample = self._threshold_sample(pred_original_sample)
         elif self.config.clip_sample:
+            print("config.thresholding: no")
             pred_original_sample = pred_original_sample.clamp(
                 -self.config.clip_sample_range, self.config.clip_sample_range
             )
@@ -439,6 +444,7 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
 
         if use_clipped_model_output:
             # the pred_epsilon is always re-derived from the clipped x_0 in Glide
+            print("use_clipped_model_output: yes")
             pred_epsilon = (sample - alpha_prod_t ** (0.5) * pred_original_sample) / beta_prod_t ** (0.5)
 
         # 6. compute "direction pointing to x_t" of formula (12) from https://arxiv.org/pdf/2010.02502.pdf
@@ -455,9 +461,11 @@ class DDIMScheduler(SchedulerMixin, ConfigMixin):
                 )
 
             if variance_noise is None:
+                print("variance_noise is None")
                 variance_noise = randn_tensor(
                     model_output.shape, generator=generator, device=model_output.device, dtype=model_output.dtype
                 )
+            print("eta>0")
             variance = std_dev_t * variance_noise
 
             prev_sample = prev_sample + variance

@@ -518,8 +518,7 @@ class EulerDiscreteScheduler(SchedulerMixin, ConfigMixin):
             pred_original_sample = model_output
             print("Hello from x0")
         elif self.config.prediction_type == "epsilon":
-            # pred_original_sample = sample - sigma_hat * model_output
-            pred_original_sample = model_output * (-sigma / (sigma**2 + 1) ** 0.5) + (sample / (sigma**2 + 1))
+            pred_original_sample = sample - sigma_hat * model_output
             print("Hello from e")
         elif self.config.prediction_type == "v_prediction":
             # denoised = model_output * c_out + input * c_skip
